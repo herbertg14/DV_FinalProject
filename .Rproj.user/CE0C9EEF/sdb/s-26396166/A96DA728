@@ -1,0 +1,18 @@
+{
+    "contents" : "require(\"ggplot2\")\nrequire(\"ggthemes\")\nrequire(\"gplots\")\nrequire(\"grid\")\nrequire(\"RCurl\")\nrequire(\"reshape2\")\nrequire(\"rstudio\")\nrequire(\"tableplot\")\nrequire(\"tidyr\")\nrequire(\"dplyr\")\nrequire(\"jsonlite\")\nrequire(\"extrafont\")\nrequire(\"lubridate\")\n\nsetwd(\"~/University of Texas/Data Visualization/DV_FinalProject/01 Data\")\n\nfile_path <- \"~/University of Texas/Data Visualization/DV_RProject2/01 Data/LeadingCausesStateYear.csv\"\n\ndf <- read.csv(file_path, stringsAsFactors = FALSE)\n\nstr(df) # Uncomment this and  run just the lines to here to get column types to use for getting the list of measures.\n\nmeasures <- c(\"YEAR\",\"DEATHS\",\"AADR\")\n\n# Get rid of special characters in each column.\n# Google ASCII Table to understand the following:\n\ndimensions <- setdiff(names(df), measures)\n\nsql <- paste(\"CREATE TABLE\", \"COD\", \"(\\n\")\nif( length(dimensions) > 1 || ! is.na(dimensions)) {\n  for(d in dimensions) {\n    sql <- paste(sql, paste(d, \"varchar2(4000),\\n\"))\n  }\n}\nif( length(measures) > 1 || ! is.na(measures)) {\n  for(m in measures) {\n    if(m != tail(measures, n=1)) sql <- paste(sql, paste(m, \"number(38,4),\\n\"))\n    else sql <- paste(sql, paste(m, \"number(38,4)\\n\"))\n  }\n}\nsql <- paste(sql, \");\")\ncat(sql)",
+    "created" : 1449356861373.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4226300850",
+    "id" : "A96DA728",
+    "lastKnownWriteTime" : 1449357477,
+    "path" : "~/University of Texas/Data Visualization/DV_FinalProject/01 Data/SQL_Code1_Herbert.R",
+    "project_path" : "01 Data/SQL_Code1_Herbert.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
