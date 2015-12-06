@@ -1,0 +1,17 @@
+{
+    "contents" : "require(\"ggplot2\")\nrequire(\"gplots\")\nrequire(\"grid\")\nrequire(\"RCurl\")\nrequire(\"reshape2\")\nrequire(\"tableplot\")\nrequire(\"tidyr\")\nrequire(\"dplyr\")\nrequire(\"jsonlite\")\nrequire(\"lubridate\")\n\n\n# Import Data from SQL database\nNHCE <- data.frame(fromJSON(getURL(URLencode('skipper.cs.utexas.edu:5001/rest/native/?query=\"select * from NHCE\"'),httpheader=c(DB='jdbc:oracle:thin:@sayonara.microlab.cs.utexas.edu:1521:orcl', USER='C##cs329e_hog74', PASS='orcl_hog74', MODE='native_mode', MODEL='model', returnDimensions = 'False', returnFor = 'JSON'), verbose = TRUE), ))\n\nsummary(NHCE)\nhead(NHCE)\n",
+    "created" : 1449435424256.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3422424332",
+    "id" : "CFDBA495",
+    "lastKnownWriteTime" : 1449435142,
+    "path" : "~/University of Texas/Data Visualization/DV_FinalProject/01 Data/NHCE_ETL.R",
+    "project_path" : "01 Data/NHCE_ETL.R",
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

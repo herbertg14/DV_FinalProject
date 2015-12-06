@@ -1,0 +1,18 @@
+{
+    "contents" : "df1 <- COD %>% select(STATE,YEAR,AADR,CAUSE_NAME,DEATHS) %>% filter(YEAR == 2009 & CAUSE_NAME == \"Suicide\")\n\ndf2 <- NHCE %>% filter(CODE == 7,COUNTRY_GROUP == \"State\") %>% select(ITEM,STATE_NAME,Y2009) %>% rename(STATE = STATE_NAME, SPENDING = Y2009)\n\ndf <- dplyr::inner_join(df1,df2, by = \"STATE\")\n\nggplot() +\n  coord_cartesian() +\n  scale_x_continuous() + \n  scale_y_continuous() + \n  labs(title = \"Prescription Drug Spending vs. Deaths by Suicide\") +\n  labs(x= \"Spending (Millions of Dollars)\",y = \"Number of Deaths\") +\n  theme_gray() +\n  theme(plot.title=element_text(size=20, face=\"bold\", vjust=2)) +\n  layer(data = df,\n        mapping = aes(x = SPENDING, y = DEATHS),\n        stat=\"identity\", \n        stat_params=list(),\n        geom=\"point\",geom_params=list(),\n        position=position_jitter(width=0.3, height=0))\n",
+    "created" : 1449439881404.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3694433337",
+    "id" : "F8B8538A",
+    "lastKnownWriteTime" : 1449439966,
+    "path" : "~/University of Texas/Data Visualization/DV_FinalProject/01 Data/Graph2.R",
+    "project_path" : "01 Data/Graph2.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
