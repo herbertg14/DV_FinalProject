@@ -10,7 +10,7 @@ dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       menuItem("Graph 1", tabName = "distPlot1", icon = icon("th")),
-      menuItem("Graph 2", tabName = "barchart", icon = icon("th")),
+      menuItem("Graph 2", tabName = "distPlot2", icon = icon("th")),
       menuItem("Graph 3", tabName = "blending", icon = icon("th")),
       menuItem("Graph 4", tabName = "map", icon = icon("th")),
       menuItem("Table", tabName = "table", icon = icon("th"))
@@ -25,7 +25,7 @@ dashboardPage(
       ),
       
       # Second tab content
-      tabItem(tabName = "barchart",
+      tabItem(tabName = "distPlot2",
         actionButton(inputId = "clicks2",  label = "Click me"),
         plotOutput("distPlot2")
       ),
