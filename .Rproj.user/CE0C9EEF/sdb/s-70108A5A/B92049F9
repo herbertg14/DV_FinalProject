@@ -1,0 +1,25 @@
+{
+    "contents" : "",
+    "created" : 1449447275183.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "B92049F9",
+    "lastKnownWriteTime" : 21392300099829876,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "euh7fc4lui",
+        "caption" : "NHCE",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=NHCE&cache_key=euh7fc4lui",
+        "displayedObservations" : 660,
+        "environment" : "",
+        "object" : "NHCE",
+        "totalObservations" : 660,
+        "variables" : 37
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

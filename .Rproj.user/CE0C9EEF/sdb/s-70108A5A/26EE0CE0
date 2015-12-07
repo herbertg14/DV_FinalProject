@@ -1,0 +1,25 @@
+{
+    "contents" : "",
+    "created" : 1449447265444.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "26EE0CE0",
+    "lastKnownWriteTime" : 7011605692497750387,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "i41brs1gaw",
+        "caption" : "COD",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=COD&cache_key=i41brs1gaw",
+        "displayedObservations" : 11482,
+        "environment" : "",
+        "object" : "COD",
+        "totalObservations" : 11482,
+        "variables" : 6
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}
