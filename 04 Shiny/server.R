@@ -20,17 +20,18 @@ shinyServer(function(input, output) {
         })
   
   output$distPlot1 <- renderPlot(height=500, width=1000, {
-    plot1 <- ggplot() + 
-      coord_cartesian() + 
-      scale_x_continuous() +
-      scale_y_continuous() +
-      labs(title= 'Correlation between Spending on Hospital Care and Deaths caused by Diseases of the Heart', x= 'Deaths',y='Spending in 1999') +
-      layer(data=df1(), 
-            mapping=aes(x=DEATHS, y=AADR), 
-            stat="identity", 
-            stat_params=list(), 
-            geom="point"
-      ) 
+    plot1 <- ggplot() +
+      coord_cartesian() +
+      scale_x_discrete() +
+      scale_Y_continuous() +
+      labs() +
+      layer(data = df1(),
+            mapping()
+            stat = ''
+              geom = '')
+    
+    aes(x = YEAR, y = DEATHS, color = CAUSE_NAME)) + geom_point() + labs(title='Texas Leading COD 1999-2013') + labs(x="Year", y="Number of Deaths") + geom_line()
+
     plot1
   })
 
