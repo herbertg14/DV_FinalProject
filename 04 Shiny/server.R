@@ -7,6 +7,7 @@ require(shiny)
 require(shinydashboard)
 require(leaflet)
 require(DT)
+require(reshape2)
 
 shinyServer(function(input, output) {
         
