@@ -11,11 +11,11 @@ require(reshape2)
 
 shinyServer(function(input, output) {
         
-  df1 <- eventReactive(input$clicks1, {data.frame(fromJSON(getURL(URLencode(gsub("\n", " ", 'skipper.cs.utexas.edu:5001/rest/native/?query="select * from COD;"')), httpheader=c(DB='jdbc:oracle:thin:@sayonara.microlab.cs.utexas.edu:1521:orcl',USER='C##cs329e_hog74', PASS='orcl_hog74', MODE='native_mode', MODEL='model', returnDimensions = 'False', returnFor = 'JSON'), verbose = TRUE))) %>% select(CAUSE_NAME,STATE,AADR,YEAR) %>% filter(STATE == "Texas", (CAUSE_NAME == "Diabetes" | CAUSE_NAME == "Diseases of Heart"| CAUSE_NAME == "Alzheimers disease"| CAUSE_NAME == "Stroke"| CAUSE_NAME == "Chronic liver disease and cirrhosis"| CAUSE_NAME == "Cancer"))
+  df1 <- eventReactive(input$clicks1, {data.frame(fromJSON(getURL(URLencode(gsub("\n", " ", 'skipper.cs.utexas.edu:5001/rest/native/?query="select * from COD;"')), httpheader=c(DB='jdbc:oracle:thin:@sayonara.microlab.cs.utexas.edu:1521:orcl',USER='C##cs329e_hog74', PASS='orcl_hog74', MODE='native_mode', MODEL='model', returnDimensions = 'False', returnFor = 'JSON'), verbose = TRUE))) %>% select(CAUSE_NAME,STATE,AADR,DEATHS,YEAR) %>% filter(STATE == "Texas", (CAUSE_NAME == "Diabetes" | CAUSE_NAME == "Diseases of Heart"| CAUSE_NAME == "Alzheimers disease"| CAUSE_NAME == "Stroke"| CAUSE_NAME == "Chronic liver disease and cirrhosis"| CAUSE_NAME == "Cancer" | CAUSE_NAME == "Homicide" | CAUSE_NAME == "Influenza and pneumonia" | CAUSE_NAME == "Kidney Disease" | CAUSE_NAME == "Parkinsons disease"))
   })
   
-  output$distPlot1 <- renderPlot(height=500, width=1000, {
-    plot1 <- ggplot(df1(),aes(x = YEAR, y = AADR, color = CAUSE_NAME)) + geom_point() + labs(title='Texas Leading COD 1999-2013') + labs(x="Year", y="Age-Adjusted Death Rate per 100,000 people") +geom_line()
+  output$distPlot1 <- renderPlot(height=700, width=1000, {
+    plot1 <- ggplot(df1(),aes(x = YEAR, y = DEATHS, color = CAUSE_NAME)) + geom_point() + labs(title='Texas Leading Cause of Death 1999-2013') + labs(x="Year", y="Number of Deaths") +geom_line()
     plot1
   })
 
@@ -36,21 +36,8 @@ shinyServer(function(input, output) {
           returnDimensions = 'False', returnFor = 'JSON'), verbose = TRUE)))
   })
   
-  output$distPlot2 <- renderPlot(height=500, width=1000, {
-    plot2 <- ggplot() +
-      coord_cartesian() +
-      scale_x_continuous() + 
-      scale_y_continuous() + 
-      labs(title = "Prescription Drug Spending vs. Deaths by Suicide") +
-      labs(x= "Spending (Millions of Dollars)",y = "Number of Deaths") +
-      theme_gray() +
-      theme(plot.title=element_text(size=20, face="bold", vjust=2)) +
-      layer(data = df2(),
-            mapping = aes(x = SPENDING, y = DEATHS),
-            stat="identity", 
-            stat_params=list(),
-            geom="point",geom_params=list(),
-            position=position_jitter(width=0.3, height=0)) 
+  output$distPlot2 <- renderPlot(height=700, width=1000, {
+    plot2 <- df %>% ggplot(aes(x = SPENDING, y = DEATHS)) + geom_point() + geom_smooth(method = lm) + labs(x= "Spending (Millions of Dollars)",y = "Number of Deaths") + labs(title = "Prescription Drug Spending vs. Deaths by Suicide")
     plot2
   })
 
@@ -90,7 +77,7 @@ select ITEM,(1000*Y1980/14229191) AS Y1980,(1000*Y1980/14229191) as Y1980IN,
 FROM (select * from NHCE where STATE_NAME = \\\'Texas\\\')
 """'),httpheader=c(DB='jdbc:oracle:thin:@sayonara.microlab.cs.utexas.edu:1521:orcl', USER='C##cs329e_riw223', PASS='orcl_riw223', MODE='native_mode', MODEL='model', returnDimensions = 'False', returnFor = 'JSON'), verbose = TRUE))),id.var="ITEM")})
 
-      output$distPlot3 <- renderPlot(height=500, width=1000, {
+      output$distPlot3 <- renderPlot(height=700, width=1350, {
             plot3 <- ggplot () + 
               coord_cartesian() +
               scale_x_discrete() +
@@ -116,7 +103,7 @@ FROM (select * from NHCE where STATE_NAME = \\\'Texas\\\')
 "select CODE, ITEM, STATE_NAME, AVERAGE_ANNUAL_PERCENT_GROWTH, KPI as ratio,case when KPI < "p1" then \\\'03 Low\\\' when KPI < "p2" then \\\'02 Med\\\' else \\\'01 High\\\' end KPI from (select CODE, ITEM, STATE_NAME, AVERAGE_ANNUAL_PERCENT_GROWTH, AVERAGE_ANNUAL_PERCENT_GROWTH as KPI from NHCE where ITEM != \\\'Total State Spending\\\' AND STATE_NAME != \\\'null\\\')"
 ')), httpheader=c(DB='jdbc:oracle:thin:@sayonara.microlab.cs.utexas.edu:1521:orcl', USER='C##cs329e_vp5467', PASS='orcl_vp5467', MODE='native_mode', MODEL='model', returnDimensions = 'False', returnFor = 'JSON', p1=LO(), p2=MED()), verbose = TRUE)))})
       
-      output$distPlot4<- renderPlot({
+      output$distPlot4<- renderPlot(height=650, width=1400, {
         plot4 <- ggplot () + 
           coord_cartesian() + 
           scale_x_discrete() +
@@ -130,7 +117,7 @@ FROM (select * from NHCE where STATE_NAME = \\\'Texas\\\')
                 geom="text",
                 geom_params=list(colour="black"), 
                 position=position_identity()
-                ) +
+                ) + theme(axis.text.x = element_text(angle = 7,size = 10)) +
           layer(data=df4(), 
                 mapping=aes(x=ITEM, y=STATE_NAME, fill=KPI), 
                 stat="identity", 
@@ -140,9 +127,7 @@ FROM (select * from NHCE where STATE_NAME = \\\'Texas\\\')
                 position=position_identity()
                 )
         plot4
-})
-      
-# Begin code for Fifth Tab:
-      output$table <- renderDataTable({datatable(df1())
-      })
+        })
+
+
 })

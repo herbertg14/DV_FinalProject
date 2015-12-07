@@ -12,8 +12,7 @@ dashboardPage(
       menuItem("Graph 1", tabName = "distPlot1", icon = icon("th")),
       menuItem("Graph 2", tabName = "distPlot2", icon = icon("th")),
       menuItem("Graph 3", tabName = "blending", icon = icon("th")),
-      menuItem("Graph 4", tabName = "crosstab", icon = icon("th")),
-      menuItem("Table", tabName = "table", icon = icon("th"))
+      menuItem("Graph 4", tabName = "crosstab", icon = icon("th"))
     )
   ),
   dashboardBody(
@@ -38,7 +37,9 @@ dashboardPage(
       
       # Fourth tab content
       tabItem(tabName = "crosstab",
-        sliderInput("KPI1", 
+        box(height = 650, width = 1400,plotOutput("distPlot4")),
+        box(
+          sliderInput("KPI1", 
                     "LO:", 
                     min = 1,
                     max = 7, 
@@ -49,14 +50,10 @@ dashboardPage(
                     max = 10, 
                     value = 10),
         actionButton(inputId = "clicks4", 
-                     label = "Click me"),
-        plotOutput("distPlot4")
-        ),
-        
-      # Fifth tab content
-      tabItem(tabName = "table",
-        dataTableOutput("table")
-      )
+                     label = "Click me")
+        )
+        )
+
     )
   )
 )
