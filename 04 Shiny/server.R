@@ -13,14 +13,23 @@ shinyServer(function(input, output) {
         
         df1 <- eventReactive(input$clicks1, {data.frame(fromJSON(getURL(URLencode(gsub("\n", " ", 
             'skipper.cs.utexas.edu:5001/rest/native/?query=
-            "select * from COD;"')), 
+            "select CAUSE_NAME, DEATHS, STATE, YEAR from COD
+            where STATE = \\\'Texas\\\'
+            and CAUSE_NAME != \\\'All Causes\\\';"')), 
             httpheader=c(DB='jdbc:oracle:thin:@sayonara.microlab.cs.utexas.edu:1521:orcl',
             USER='C##cs329e_hog74', PASS='orcl_hog74', MODE='native_mode', MODEL='model', 
-            returnDimensions = 'False', returnFor = 'JSON'), verbose = TRUE))) %>% select(CAUSE_NAME,STATE,AADR,YEAR) %>% filter(STATE == "Texas", (CAUSE_NAME == "Diabetes" | CAUSE_NAME == "Diseases of Heart"| CAUSE_NAME == "Alzheimers disease"| CAUSE_NAME == "Stroke"| CAUSE_NAME == "Chronic liver disease and cirrhosis"| CAUSE_NAME == "Cancer"))
+            returnDimensions = 'False', returnFor = 'JSON'), verbose = TRUE)))
         })
   
   output$distPlot1 <- renderPlot(height=500, width=1000, {
-    plot1 <- ggplot(df1(),aes(x = YEAR, y = AADR, color = CAUSE_NAME)) + geom_point() + labs(title='Texas Leading COD 1999-2013') + labs(x="Year", y="Age-Adjusted Death Rate per 100,000 people") +geom_line()
+    plot1 <- ggplot() +
+      coord_cartesian() +
+      scale_x_continuous() +
+      scale_y_continuous() +
+      labs(title = 'Texas Leading Cause of Death', x = 'Year', y = 'Number of Deaths') +
+      layer(data = df1(),
+            mapping = aes(x= YEAR, y=DEATHS),
+            geom = 'point') 
     plot1
   })
 
