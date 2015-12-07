@@ -7,6 +7,7 @@ require(shiny)
 require(shinydashboard)
 require(leaflet)
 require(DT)
+require(reshape2)
 
 shinyServer(function(input, output) {
         
@@ -34,7 +35,7 @@ shinyServer(function(input, output) {
 
 # Begin code for Second Tab:
 
-  df2 <- eventReactive(input$clicks1, {data.frame(fromJSON(getURL(URLencode(gsub("\n", " ", 
+  df2 <- eventReactive(input$clicks2, {data.frame(fromJSON(getURL(URLencode(gsub("\n", " ", 
         'skipper.cs.utexas.edu:5001/rest/native/?query=
          "SELECT COD.STATE ,COD.YEAR, COD.CAUSE_NAME, COD.DEATHS,
           NHCE.ITEM, NHCE.STATE_NAME, NHCE.Y2009 AS SPENDING
@@ -101,7 +102,7 @@ select ITEM,(1000*Y1980/14229191) AS Y1980,(1000*Y1980/14229191) as Y1980IN,
 (1000 * Y2008/24326974) AS Y2008,((1000 * Y1980/24326974)*POWER(1.06,28)) AS Y2008IN,
 (1000 * Y2009/24782302) AS Y2009,((1000 * Y1980/24782302)*POWER(1.06,29)) AS Y2009IN
 FROM (select * from NHCE where STATE_NAME = \\\'Texas\\\')
-"""'),httpheader=c(DB='jdbc:oracle:thin:@sayonara.microlab.cs.utexas.edu:1521:orcl', USER='C##cs329e_riw223', PASS='orcl_riw223', MODE='native_mode', MODEL='model', returnDimensions = 'False', returnFor = 'JSON'), verbose = TRUE), )),id.var="ITEM")})
+"""'),httpheader=c(DB='jdbc:oracle:thin:@sayonara.microlab.cs.utexas.edu:1521:orcl', USER='C##cs329e_riw223', PASS='orcl_riw223', MODE='native_mode', MODEL='model', returnDimensions = 'False', returnFor = 'JSON'), verbose = TRUE))),id.var="ITEM")})
 
       output$distPlot3 <- renderPlot(height=500, width=1000, {
             plot3 <- ggplot () + 
@@ -118,9 +119,43 @@ FROM (select * from NHCE where STATE_NAME = \\\'Texas\\\')
       })
 
 # Begin code for Fourth Tab:
-      output$map <- renderLeaflet({leaflet() %>% addTiles() %>% setView(-93.65, 42.0285, zoom = 17) %>% addPopups(-93.65, 42.0285, 'Here is the Department of Statistics, ISU')
-      })
 
+      LO <- reactive({input$KPI1})     
+      MED <- reactive({input$KPI2})
+      rv <- reactiveValues(alpha = 0.50)
+      observeEvent(input$light, { rv$alpha <- 0.50 })
+      observeEvent(input$dark, { rv$alpha <- 0.75 })
+
+      df4 <- eventReactive(input$clicks4, {data.frame(fromJSON(getURL(URLencode(gsub("\n", " ", 'skipper.cs.utexas.edu:5001/rest/native/?query=
+"select CODE, ITEM, STATE_NAME, AVERAGE_ANNUAL_PERCENT_GROWTH, KPI as ratio,case when KPI < "p1" then \\\'03 Low\\\' when KPI < "p2" then \\\'02 Med\\\' else \\\'01 High\\\' end KPI from (select CODE, ITEM, STATE_NAME, AVERAGE_ANNUAL_PERCENT_GROWTH, AVERAGE_ANNUAL_PERCENT_GROWTH as KPI from NHCE where ITEM != \\\'Total State Spending\\\' AND STATE_NAME != \\\'null\\\')"
+')), httpheader=c(DB='jdbc:oracle:thin:@sayonara.microlab.cs.utexas.edu:1521:orcl', USER='C##cs329e_vp5467', PASS='orcl_vp5467', MODE='native_mode', MODEL='model', returnDimensions = 'False', returnFor = 'JSON', p1=LO(), p2=MED()), verbose = TRUE)))})
+      
+      output$distPlot4<- renderPlot({
+        plot4 <- ggplot () + 
+          coord_cartesian() + 
+          scale_x_discrete() +
+          scale_y_discrete() +
+          labs(title="Average Expense Growth from 2000-2009") +
+          labs(x=paste("STATE_NAME"), y=paste("ITEM")) +
+          layer(data=df4(), 
+                mapping=aes(x=ITEM, y=STATE_NAME, label=round(AVERAGE_ANNUAL_PERCENT_GROWTH,digits = 2),color = factor(HIGH)), 
+                stat="identity", 
+                stat_params=list(), 
+                geom="text",
+                geom_params=list(colour="black"), 
+                position=position_identity()
+                ) +
+          layer(data=df4(), 
+                mapping=aes(x=ITEM, y=STATE_NAME, fill=KPI), 
+                stat="identity", 
+                stat_params=list(), 
+                geom="tile",
+                geom_params=list(alpha=rv$alpha), 
+                position=position_identity()
+                )
+        plot4
+})
+      
 # Begin code for Fifth Tab:
       output$table <- renderDataTable({datatable(df1())
       })
