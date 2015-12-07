@@ -10,8 +10,9 @@ require(DT)
 
 shinyServer(function(input, output) {
         
-        df1 <- eventReactive(input$clicks1, {data.frame(fromJSON(getURL(URLencode(gsub("\n", " ", 'skipper.cs.utexas.edu:5001/rest/native/?query=
-            "select CAUSE_NAME,AADR, DEATHS, STATE, YEAR from COD
+        df1 <- eventReactive(input$clicks1, {data.frame(fromJSON(getURL(URLencode(gsub("\n", " ", 
+            'skipper.cs.utexas.edu:5001/rest/native/?query=
+            "select CAUSE_NAME, DEATHS, STATE, YEAR from COD
             where STATE = \\\'Texas\\\'
             and CAUSE_NAME != \\\'All Causes\\\';"')), 
             httpheader=c(DB='jdbc:oracle:thin:@sayonara.microlab.cs.utexas.edu:1521:orcl',
@@ -22,16 +23,12 @@ shinyServer(function(input, output) {
   output$distPlot1 <- renderPlot(height=500, width=1000, {
     plot1 <- ggplot() +
       coord_cartesian() +
-      scale_x_discrete() +
-      scale_Y_continuous() +
-      labs() +
+      scale_x_continuous() +
+      scale_y_continuous() +
+      labs(title = 'Texas Leading Cause of Death', x = 'Year', y = 'Number of Deaths') +
       layer(data = df1(),
-            mapping()
-            stat = ''
-              geom = '')
-    
-    aes(x = YEAR, y = DEATHS, color = CAUSE_NAME)) + geom_point() + labs(title='Texas Leading COD 1999-2013') + labs(x="Year", y="Number of Deaths") + geom_line()
-
+            mapping = aes(x= YEAR, y=DEATHS),
+            geom = 'point') 
     plot1
   })
 
