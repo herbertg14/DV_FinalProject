@@ -37,7 +37,9 @@ dashboardPage(
       
       # Fourth tab content
       tabItem(tabName = "crosstab",
-        sliderInput("KPI1", 
+        box(height = 650, width = 1400,plotOutput("distPlot4")),
+        box(
+          sliderInput("KPI1", 
                     "LO:", 
                     min = 1,
                     max = 7, 
@@ -48,8 +50,8 @@ dashboardPage(
                     max = 10, 
                     value = 10),
         actionButton(inputId = "clicks4", 
-                     label = "Click me"),
-        plotOutput("distPlot4")
+                     label = "Click me")
+        )
         )
 
     )
