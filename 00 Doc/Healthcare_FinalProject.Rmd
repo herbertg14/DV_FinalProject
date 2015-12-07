@@ -91,7 +91,9 @@ https://herbertg14.shinyapps.io/FinalProject
 
 ##Visualization 3: Effects of Inflation
 
-INSERT COMMENTS HERE
+When we first started playing with the data, we were looking at the breakdown of healthcare spending by the different types of spending.  After overlapping a few years of data were realized that we wanted to show a time series of healthcare expenditures.  We broke it down by item using different colors to represent the respective proportions of different items within the total annual healthcare spending bar.  After seeing how significant the rise was, we decided that we wanted to see how it compared to inflation.  We wrote a lengthy SQL code to include inflation data and then realized that in addition to inflation we needed to consider population growth.  By the end the time series showed annual per capita spending values.
+
+It is interesting to note that the earlier graph showing the Texas Leading Causes of Death shows the total number of deaths remaining relatively steady despite significant population growth.  This reflects the increasing life expectancy of people due to the improvements in healthcare, technology, diet, etc... Some of these improvements can be attributed to the increased per capita spending on development of new medications, technologies, and services.
 
 
 ####Rstudio
