@@ -12,8 +12,7 @@ output: html_document
 
 ###Introduction
 
-
-We have been working with these same two datasets (first is US healthcare expenditures over time, and second is US Causes of Death by State) for multiple R projects, so it was interesting to finally work with this data in Tableau. With the enhanced capability of Tableau, we wanted to drill down deeper into healthcare expenditures by item (hospital care, dental care, prescription drugs, etc.) and correlate these figures with deaths.
+Today we are here to present our data from two different data sets focused on Health care expenditure by state and Causes of death by state. In order to present our data we felt it was appropriate to use all the resources available to use including Rstudio, Shiny, Tableau and SQL. 
 
 
 ###Loading our data from the Oracle Database
@@ -49,39 +48,63 @@ source("../01 Data/Inflation_ETL.R", echo = TRUE)
 ```
 
 
-We created each of our visualizations in Tableau, then R workflows, then finally SQL and Shiny.
+We created each of our visualizations in Tableau, then R workflows, ending finally SQL and Shiny.
 
 
-###Visualization #1: Texas Leading Causes of Death 1999 - 2013
+##Visualization #1: Texas Leading Causes of Death 1999 - 2013
 
+To begin we wanted to see how the distribution of deaths in the United States were represented based on different causes of death. Interestingly enough, the data showed that across America the leading causes were Cancer and Cardivascular causes. To narrow it down we focused only on Texas' causes of death from 1999 - 2013 and the data was very similar to the national causes of death. As the data shows the two leading causes of deaths in Texas are both highly correlated with lifestyle choices such as diet, sleep, exercise and others. However, the other remaining causes of deaths are more focused on genetics rather than lifestyle choice. Therefore, in order to reduce the number of deaths in Texas (and in the US) it would be important to educate the public on healthier lifestyle choices.
 
+####Rstudio
 ```{r}
 source("../01 Data/Graph1.R", echo = TRUE)
 ```
 
-
+####Tableau
 ![](./LeadingCOD.png)
 
+####Shiny
+https://herbertg14.shinyapps.io/FinalProject
 
 
-###Visualization 2: Effects of drug spending and Suicide
 
 
+###Visualization 2: Effects of Prescription Drug Spending per state and Suicide deaths
+
+Despite the fact that most deaths were caused by cancer and cardiovascular diseases. We noticed that deaths by suicide was suprisingly high and we wanted to know any causes for that based on medical spending within the states. We felt as if prescription drug spending would be closely associated with the number of deaths by suicide. When joining these two data sets we can that there is a significantly strong positive correlation between spending on prescription drugs within the State and the number of suicides in the year 2009. 
+
+
+####Rstudio
 ```{r}
 source("../01 Data/Graph2.R", echo = TRUE)
 ```
 
+####Tableau
 ![](./drugsandsuicide.png)
 
+####Shiny
+https://herbertg14.shinyapps.io/FinalProject
 
-###Visualization 3: Effects of Inflation
 
 
-![](./inflation.png)
 
+
+##Visualization 3: Effects of Inflation
+
+INSERT COMMENTS HERE
+
+
+####Rstudio
 ```{r}
 source("../01 Data/Ryan_BarChart_SQL.R", echo = TRUE)
 ```
+
+####Tableau
+![](./inflation.png)
+
+####Shiny
+https://herbertg14.shinyapps.io/FinalProject
+
 
 
 ###Visualization 4: Healthcare Expenditures by State
@@ -91,14 +114,14 @@ Thus far, we have looked at healthcare from a local and science-focused perspect
 
 First, we created a Crosstab with a KPI to view the average growth in healthcare expenditures over the past 30 years by State and Item. The KPI classified growth less than 7% as 'Low' (colored green), between 7-10% as 'Medium' (colored blue), and greater than 10% as 'High' (colored red). It gives a quick glance at the fastest-growing expenditures, unadjusted for inflation, allowing us to compare their relative growth rates. 
 
-
+####Rstudio
 ![](./kpi.png)
 
+####Tableau
+![](./kpiTableau.png)
 
-```{r}
-source("../01 Data/Varun_Crosstab - Average Exp Growth.R", echo = TRUE)
-```
-
+####Shiny
+https://herbertg14.shinyapps.io/FinalProject
 
 The red numbers show the items of highest growth (Prescription Drugs and Home Healthcare). This makes sense because people are spending a lot more on drugs with new discoveries in the pharmaceutical industry. Furthermore, increased wealth and medical advances allow elderly patients to live longer, spurring the rise in home healthcare expenses. The green numbers show the items of lowest growth (Durable Medical Products, Other Non-Durable Medical Products, Dental Services, and Hospital Care). The first two were unsurprising because of the commercialization of these products (corporations can continue to offer higher value for lower prices). The second two were also unsurprising since they are more closely tied to inflation and population growth.
 
@@ -108,12 +131,15 @@ The corresponding fourth tab in Shiny shows a web-hosted version of this crossta
 Second, we wanted to get a better regional understanding of healthcare expenditures per capita. Therefore, we created a bar chart ranking states by healthcare expenditures per capita in 2009, colored by region, and filtered by Item.
 
 
-![](./bargraph.png)
-
-
+####Rstudio
 ```{r}
 source("../01 Data/Varun_Bar Chart - Exp per Capita.R", echo = TRUE)
 ```
+
+####Tableau
+![](./bargraph.png)
+
+
 
 
 Healthcare expenditures per capita are highest in Washington, D.C., especially hospital care and personal healthcare. We theorized this was the case because all federal expenditures were probably allocated there. Another interesting result we observed was that the more urban, densely populated regions had higher per capita expenditures while the more sparsely populated regions like Rocky Mountains and Plains were lower. This is likely because people in urban areas have more access to healthcare and are therefore more likely to spend money on such services.
@@ -123,11 +149,11 @@ We chose not to host this chart in Shiny because it would be unnecessarily redun
 
 The third and final visualization in this section was created exclusively in Tableau. We wanted to see the above results in map form to better see the regional clustering. A screen capture of the Tableau workbook is displayed below. Filtering by item and region allows for greater insight into specific areas.
 
-
+####Tableau
 ![](./map.png)
 
 
-###Conclusion
+##Conclusion
 
 
 This project is very useful to understand healthcare in the US and how trends in the past 30 years influence healthcare companies, healthcare policy, and healthcare innovation. First, we observed that an increasing number of deaths are attributed to poor lifestyle choices over genetic or natural causes. Second, we found that prescription drug spending and deaths by suicide are highly correlated acrosss states. Third, we found that healthcare expenditure growth is outpacing inflation. Finally, we observed that expenditure growth is highest for technology-centric items in densely populated areas. Policymakers and corporations can use this data to encourage healthier lifestyles, support mental health, and focus efforts in urban areas to reverse this trend of rising expenditures, leaving more money in Americans' pockets and contributing to a healthier society.

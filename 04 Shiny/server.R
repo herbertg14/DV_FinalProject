@@ -37,7 +37,7 @@ shinyServer(function(input, output) {
   })
   
   output$distPlot2 <- renderPlot(height=700, width=1000, {
-    plot2 <- df %>% ggplot(aes(x = SPENDING, y = DEATHS)) + geom_point() + geom_smooth(method = lm) + labs(x= "Spending (Millions of Dollars)",y = "Number of Deaths") + labs(title = "Prescription Drug Spending vs. Deaths by Suicide")
+    plot2 <- df2() %>% ggplot(aes(x = SPENDING, y = DEATHS)) + geom_point() + geom_smooth(method = lm) + labs(x= "Spending (Millions of Dollars)",y = "Number of Deaths") + labs(title = "Prescription Drug Spending vs. Deaths by Suicide")
     plot2
   })
 
